@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<title>随机色块</title>
+</head>
+<body>
+	<button onclick="createBox()">添加随机色块</button>
+	<button onclick="changeMode()">渐变模式</button>
+	<button onclick="changeRound()">圆角模式</button>
+	<div id="boxView"></div>
+</body>
+<script>
+	let $boxView = document.getElementById('boxView')
+	let modeGradient = false
+	let modeRound = false
+	let color = '1234567890abcdef'
+	let boxLineMax = 20
+	let boxSizeMax = 100
+	let borderAllStyle = ['solid', 'dotted', 'dashed', 'double', 'ridge']
+
+	// 生成随机数
+	function rand(lower, upper) {
+		return Math.floor(Math.random() * (upper - lower)) + lower
+	}
+
+	// 生成颜色
+	function getColor() {
+		let newColor = []
+		for (let i = 0; i < 6; i++) newColor[i] = color[rand(1, color.length)]
+		return newColor.join('')
+	}
+
+	// 转换模式
+	function changeMode() {
+		modeGradient = !modeGradient
+	}
+
+	// 转换圆角模式
+	function changeRound() {
+		modeRound = !modeRound
+	}
+
+	// 生成色块
+	function createBox() {
+		let size = rand(1, boxSizeMax)
+		let borderWidth = rand(1, boxLineMax)
+		let borderStyle = borderAllStyle[rand(0, borderAllStyle.length)]
+		let borderColor = getColor()
+		let borderRound = modeRound ? '20%' : '0'
+		let backgroundColor = !modeGradient
+				? `#${getColor()}`
+				: `linear-gradient(#${getColor()}, #${getColor()})`
+		let $box = 
+		`<div style="
+			display: inline-block;
+			margin: 5px;
+			background: ${backgroundColor};
+			width: ${size}px;
+			height: ${size}px;
+			border: ${borderWidth}px ${borderStyle} #${borderColor};
+			border-radius: ${borderRound};
+		">`
+		$boxView.innerHTML += $box
+	}
+</script>
+</html>
